@@ -31,6 +31,9 @@ const produtos = {
 ]}
 
 export default function Checkout(props){
+
+	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
+
 	return(<Body>
 		<Brief>
 			<p>Resumo</p>
@@ -47,22 +50,31 @@ export default function Checkout(props){
 								{elem.productName}<br/>
 								<div>
 									<br/>
-									Preço unitário: {elem.unitaryPrice}<br/>
+									Preço unitário: {emReal(elem.unitaryPrice)}<br/>
 									Quantidade: {elem.ammount}
 								</div>
 							</ItemsInner>
 						</JustifyItems>
-						<div Style="font-size: 16px; text-align: right;">Preço total:
-							<br/>
-							<div Style="font-size: 18px">{elem.totalPrice}
+							<div Style="font-size: 18px">{emReal(elem.totalPrice)}
 							</div>
-						</div>
 					</Items>
 				</>
 				)}
 			</BriefList>
+
+			<Separator/>
+			
 			<Footer>
-					
+				<div>
+					<div>
+						Preço total:
+						<div Style="font-size: 20px">{emReal(produtos.total)}
+							</div>
+					</div>
+					<button>
+						Continuar
+					</button>
+				</div>
 			</Footer>
 		</Brief>
 	</Body>)
@@ -74,7 +86,22 @@ const Body = styled.div`
 `
 
 const Footer = styled.div`
-	
+	display: flex;
+	flex-direction: row-reverse;
+	margin: 10px;
+	font-size: 16px;
+	text-align: right;
+	line-height: 20px;
+
+	button{
+		border: none;
+		border-radius: 10px;
+		font-size: 16px;
+		margin-top: 8px;
+		padding: 8px;
+		background: #121212;
+		color: #bacada;
+	}
 `
 
 const JustifyItems = styled.div`
