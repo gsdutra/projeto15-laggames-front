@@ -12,7 +12,11 @@ export default function Home(){
     }
 
     return(
-        <ContainerHome>home</ContainerHome>
+        <ContainerHome>
+            <GameUnid>
+
+            </GameUnid>
+        </ContainerHome>
 
     )
 }    
@@ -27,6 +31,14 @@ const ContainerHome = styled.div`
     //background-color: white;
 `
 const Load = styled.div`
+    display: flex;   
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 0 20px;
+`
+const GameUnid = styled.div`
     display: flex;   
     flex-direction: column;
     align-items: center;
