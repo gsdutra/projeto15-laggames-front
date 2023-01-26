@@ -1,12 +1,35 @@
-import { useContext } from "react"
+import { useContext, useEffect } from "react"
 import { LagContext } from "../contexts/LagContext"
-import { Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import styled from "styled-components"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
+import axios from "axios"
 
 export default function Home(){
-    const { products, load } = useContext(LagContext)
+    const { products, setProducts, load, setIdGame, idGame } = useContext(LagContext)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const REACT_APP_API_URL = "http://localhost:5000/games" 
+        const url = REACT_APP_API_URL
+        const promise = axios.get(url) 
+
+        promise.then(res => {          
+            setProducts(res.data)            
+        }) 
+
+        promise.catch((err) => {
+            alert(err.response.data)
+            console.log(err.message)
+        })        
+    }, [])
+
+    function gameUnid(id){
+        setIdGame(id)
+        setProducts(undefined)
+        navigate("/game")       
+    }
 
     if(products === undefined) {
         return <Load>{load}</Load>;
@@ -22,19 +45,15 @@ export default function Home(){
         <ContainerHome>
             <ContainerGames>
                 {products.map((p) => (
-                    <GameUnid key={p.id}>
+                    <GameUnid key={p._id}>
                         <div>
                             <img src={p.cape} alt="Capa"/>
                         </div>
                         <h1>{p.title}</h1>
                         <p>R$ {p.value},00</p>
                         <ContainerButtons>   
-                            <Link data-test="new-income" to={`/game`}>
-                                Mais detalhes
-                            </Link>
-                            <Link data-test="new-income" to={`/game`}>
-                                <ion-icon name="cart-outline"></ion-icon>
-                            </Link>                  
+                            <button onClick={()=>(gameUnid(p._id))}>Mais detalhes</button>
+                            <button onClick={()=>alert("clicou no carrinho")}><ion-icon name="cart-outline"></ion-icon></button>                
                         </ContainerButtons>
                     </GameUnid>
                 ))}
@@ -125,7 +144,7 @@ const GameUnid = styled.div`
 const ContainerButtons = styled.div`
     display: flex;
     justify-content: space-between;
-    a:first-child{
+    button:first-child{
         background-color: #4fa94d;
         border: none;
         border-radius: 50px;
@@ -141,7 +160,7 @@ const ContainerButtons = styled.div`
         justify-content: center;
         align-items: center;
     }
-    a:last-child{
+    button:last-child{
         background-color: #db3636;
         border: none;
         border-radius: 50px;
