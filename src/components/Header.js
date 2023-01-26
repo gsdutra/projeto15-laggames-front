@@ -15,6 +15,7 @@ export default function Header(){
 
 const HeaderPages = styled.header`
     display: flex; 
+    z-index: 99;
     align-items: center;
     justify-content: space-between;
     background-color: #2a2c31;

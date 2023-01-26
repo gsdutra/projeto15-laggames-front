@@ -85,6 +85,7 @@ const ContainerGames = styled.div`
     display: flex;
     flex-wrap: wrap;
     width: 90%;
+    margin-bottom: 50px;
 `
 const GameUnid = styled.div`
     width: 150px;
@@ -108,6 +109,9 @@ const GameUnid = styled.div`
         font-size: 15px;
         color: #FFFFFF;
         margin: 10px;
+      
+        height: 30px;
+        padding: auto;
     }
     p{
         font-family: 'Montserrat', sans-serif;
