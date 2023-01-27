@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 const produtos = {
 	"total": "4.7",
@@ -31,53 +33,58 @@ const produtos = {
 ]}
 
 export default function Checkout(props){
-
 	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
-	return(<Body>
-		<Brief>
-			<p>Resumo</p>
-			<p Style="font-size: 16px">Verifique seus itens:</p>
-			<Separator/>
-			<BriefList>
-				{produtos.items.map((elem,index)=>
-				<>
-					{index!==0?<Separator/>:<></>}
-					<Items>
-						<JustifyItems>
-							<img src={elem.productImage}/>
-							<ItemsInner>
-								{elem.productName}<br/>
-								<div>
-									<br/>
-									Preço unitário: {emReal(elem.unitaryPrice)}<br/>
-									Quantidade: {elem.ammount}
-								</div>
-							</ItemsInner>
-						</JustifyItems>
-							<div Style="font-size: 18px">{emReal(elem.totalPrice)}
-							</div>
-					</Items>
-				</>
-				)}
-			</BriefList>
+	return(
+		<>
+        	<Header/>
+			<Body>
+				<Brief>
+					<p>Resumo</p>
+					<p Style="font-size: 16px">Verifique seus itens:</p>
+					<Separator/>
+						<BriefList>
+							{produtos.items.map((elem,index)=>
+								<>
+								{index!==0?<Separator/>:<></>}
+									<Items>
+									<JustifyItems>
+										<img src={elem.productImage}/>
+										<ItemsInner>
+											{elem.productName}<br/>
+											<div>
+												<br/>
+												Preço unitário: {emReal(elem.unitaryPrice)}<br/>
+												Quantidade: {elem.ammount}
+											</div>
+										</ItemsInner>
+									</JustifyItems>
+										<div Style="font-size: 18px">{emReal(elem.totalPrice)}
+										</div>
+								</Items>
+							</>
+							)}
+						</BriefList>
 
-			<Separator/>
-			
-			<Footer>
-				<div>
-					<div>
-						Preço total:
-						<div Style="font-size: 20px">{emReal(produtos.total)}
+						<Separator/>
+						
+						<FooterCart>
+							<div>
+								<div>
+									Preço total:
+									<div Style="font-size: 20px">{emReal(produtos.total)}
+										</div>
+								</div>
+								<button>
+									Continuar
+								</button>
 							</div>
-					</div>
-					<button>
-						Continuar
-					</button>
-				</div>
-			</Footer>
-		</Brief>
-	</Body>)
+						</FooterCart>
+				</Brief>
+			</Body>
+			<Footer/>
+        </>
+		)
 }
 
 const Body = styled.div`
@@ -85,7 +92,7 @@ const Body = styled.div`
 	padding: 7%;
 `
 
-const Footer = styled.div`
+const FooterCart = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
 	margin: 10px;
@@ -94,14 +101,34 @@ const Footer = styled.div`
 	line-height: 20px;
 
 	button{
-		border: none;
-		border-radius: 10px;
-		font-size: 16px;
-		margin-top: 8px;
-		padding: 8px;
-		background: #121212;
-		color: #bacada;
-	}
+        background-color: #4fa94d;
+        border: none;
+        border-radius: 50px;
+        width: 300px;
+        height: 50px;
+        font-weight: 700;
+        margin: 5px 5px 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 12px;
+        text-decoration: none;
+        font-family: 'Kanit', sans-serif;
+        font-style: normal;
+        font-size: 20px;
+        color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 1px 5px black;
+        cursor: pointer;
+    }
+	button:hover{
+        background-color: #a3e0a1;
+        color: #000000;
+    }
+    button:active{
+        background-color: #FFFFFF;
+        color: #000000;
+    }
 `
 
 const JustifyItems = styled.div`
@@ -132,11 +159,12 @@ const ItemsInner = styled.div`
 `
 
 const Brief = styled.div`
+	font-family: 'Kanit', sans-serif;
 
 	color: #ddeebb;
 	font-size: 26px;
 
-	background: #333333;
+	background: #2a2c31;
 	border-radius: 15px;
 	width: 100%;
 

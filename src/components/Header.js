@@ -1,12 +1,19 @@
 import styled from "styled-components"
+import { useNavigate, Link } from "react-router-dom"
 
 export default function Header(){
+    const navigate = useNavigate()
+
+    function carrinho(){
+        navigate("/checkout")
+    }
+
     return(
         <HeaderPages>
             <h1>La<span>GG</span>ames</h1>
             <HeaderUser>
             <img src="https://conteudo.imguol.com.br/c/entretenimento/d2/2018/05/10/god-of-war---ps4---modo-de-fotografia-1525965576844_v2_3x4.jpg" alt="Logo TrackIt"/>
-            <ion-icon name="cart-outline"></ion-icon>
+            <ion-icon onClick={()=>carrinho()} name="cart-outline"></ion-icon>
             <ion-icon name="log-out-outline"></ion-icon>
             </HeaderUser>
         </HeaderPages>
@@ -46,9 +53,13 @@ const HeaderUser = styled.div`
         margin: 0 5px;
     }
     ion-icon{
-        color: white;
+        color: #FFFFFF;
         font-size: 20px;
         padding: 0 5px;
+        cursor: pointer;
+    }
+    ion-icon:hover{
+        color: #4fa94d;
     }
 
 `

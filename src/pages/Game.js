@@ -65,12 +65,9 @@ const ContainerGame = styled.div`
     margin: 50px 0 ;
     flex-direction: column;
 `
-const PainelGame = styled.img`
-    //width: 100%;
-    //box-shadow: 0 1px 5px black;
-
-    width: 100%; /* width of container */
-    height: 250px; /* height of container */
+const PainelGame = styled.img` 
+    width: 100%; 
+    height: 250px; 
     object-fit: cover;
     box-shadow: 0 1px 5px black;
 `
@@ -127,6 +124,7 @@ const ContainerButtons = styled.div`
         justify-content: center;
         align-items: center;
         box-shadow: 0 1px 5px black;
+        cursor: pointer;
     }
     button:last-child{
         background-color: #db3636;
@@ -148,5 +146,14 @@ const ContainerButtons = styled.div`
         justify-content: center;
         align-items: center;
         box-shadow: 0 1px 5px black;
+        cursor: pointer;
+    }
+    button:hover{
+        background-color: #a3e0a1;
+        color: #000000;
+    }
+    button:active{
+        background-color: #FFFFFF;
+        color: #000000;
     }
 `

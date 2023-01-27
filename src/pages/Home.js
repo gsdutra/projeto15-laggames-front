@@ -159,6 +159,7 @@ const ContainerButtons = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
     }
     button:last-child{
         background-color: #db3636;
@@ -172,5 +173,12 @@ const ContainerButtons = styled.div`
         font-size: 15px;
         padding: 10px;
         color: #000000;
+        cursor: pointer;
+    }
+    button:hover{
+        background-color: #a3e0a1;
+    }
+    button:active{
+        background-color: #FFFFFF;
     }
 `
