@@ -1,9 +1,10 @@
 import {useState, useEffect} from 'react'
+import axios from 'axios'
 import styled from 'styled-components'
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 
-const produtos = {
+const produtost = {
 	"total": "4.7",
 	"items": [
 	{
@@ -32,7 +33,16 @@ const produtos = {
 	}
 ]}
 
-export default function Checkout(props){
+export default function Cart(props){
+
+	const [produtos, setProdutos] = useState({items: [], total: 0})
+
+	useEffect(()=>{
+		const promisse = axios.get("http://localhost:5000/userProducts")
+
+		promisse.then((res)=> setProdutos(res.data)).catch((err)=>console.log(err))
+	},[])
+
 	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
 	return(

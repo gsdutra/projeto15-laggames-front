@@ -44,7 +44,7 @@ export default function Game(){
                 <h1>{game.title}</h1>
                 <p>{game.description}</p>
                 <ContainerButtons>  
-                    <button onClick={()=>addToCart(game.id, 1)}>Adicionar ao Carrinho</button>
+                    <button onClick={()=>addToCart(game._id, 1)}>Adicionar ao Carrinho</button>
                     <button onClick={()=>(pageHome())}>Voltar para home</button>                     
                 </ContainerButtons>
             </ContainerInfo>           

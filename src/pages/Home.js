@@ -55,7 +55,7 @@ export default function Home(){
                         <p>R$ {p.value},00</p>
                         <ContainerButtons>   
                             <button onClick={()=>(gameUnid(p._id))}>Mais detalhes</button>
-                            <button onClick={()=>addToCart(p.id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
+                            <button onClick={()=>addToCart(p._id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
                         </ContainerButtons>
                     </GameUnid>
                 ))}
