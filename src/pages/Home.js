@@ -6,6 +6,8 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import axios from "axios"
 
+import addToCart from "../functions/addToCart.js"
+
 export default function Home(){
     const { products, setProducts, load, setIdGame, idGame } = useContext(LagContext)
     const navigate = useNavigate()
@@ -53,7 +55,7 @@ export default function Home(){
                         <p>R$ {p.value},00</p>
                         <ContainerButtons>   
                             <button onClick={()=>(gameUnid(p._id))}>Mais detalhes</button>
-                            <button onClick={()=>alert("clicou no carrinho")}><ion-icon name="cart-outline"></ion-icon></button>                
+                            <button onClick={()=>addToCart(p.id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
                         </ContainerButtons>
                     </GameUnid>
                 ))}

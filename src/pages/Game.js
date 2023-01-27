@@ -6,6 +6,8 @@ import { LagContext } from "../contexts/LagContext"
 import { useEffect, useContext, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 
+import addToCart from "../functions/addToCart.js"
+
 export default function Game(){
     const { idGame, game, setGame, load } = useContext(LagContext)
     const navigate = useNavigate()
@@ -42,7 +44,7 @@ export default function Game(){
                 <h1>{game.title}</h1>
                 <p>{game.description}</p>
                 <ContainerButtons>  
-                    <button onClick={()=>alert("clicou no carrinho")}>Adicionar ao Carrinho</button>
+                    <button onClick={()=>addToCart(game.id, 1)}>Adicionar ao Carrinho</button>
                     <button onClick={()=>(pageHome())}>Voltar para home</button>                     
                 </ContainerButtons>
             </ContainerInfo>           
