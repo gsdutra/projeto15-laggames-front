@@ -1,17 +1,22 @@
 import axios from "axios"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 export default function Login() {
     const [email, setEmail] = useState("")
     const [senha, setSenha] = useState("")
-
+    const navegacao = useNavigate()
     function logar(e) {
         e.preventDefault()
         const login = { email, senha }
-        axios.post(process.env.REACT_APP_API_URL, login)
-            .then(res=> console.log(res.data))
-            .catch(err=> console.log(err.response.data))
+        axios.post(process.env.REACT_APP_API_URL + "/login", login)
+            .then(res => {
+                console.log(res.data)/*token*/
+                navegacao('/home')
+
+            })
+            .catch(err => console.log(err.response.data))
     }
     return <LoginContainer>
         <Form onSubmit={logar}>
