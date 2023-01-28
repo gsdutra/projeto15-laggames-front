@@ -7,10 +7,13 @@ import { useEffect, useContext, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 
 import addToCart from "../functions/addToCart.js"
+import Confirmation from "../components/Confirmation"
 
 export default function Game(){
     const { idGame, game, setGame, load } = useContext(LagContext)
     const navigate = useNavigate()
+
+    const [showAdd, setShowAdd] = useState(false)
 
     useEffect(() => {        
         const REACT_APP_API_URL = `http://localhost:5000/game/${idGame}` 
@@ -31,6 +34,12 @@ export default function Game(){
         navigate("/home")       
     }
 
+    function addToCartFunc(product, ammount){
+        addToCart(product, ammount)
+        setShowAdd(true)
+        setTimeout(()=>setShowAdd(false), 1500)
+    }
+
     if(game === undefined) {
         return <Load>{load}</Load>;
     }
@@ -44,11 +53,12 @@ export default function Game(){
                 <h1>{game.title}</h1>
                 <p>{game.description}</p>
                 <ContainerButtons>  
-                    <button onClick={()=>addToCart(game._id, 1)}>Adicionar ao Carrinho</button>
+                    <button onClick={()=>addToCartFunc(game._id, 1)}>Adicionar ao Carrinho</button>
                     <button onClick={()=>(pageHome())}>Voltar para home</button>                     
                 </ContainerButtons>
             </ContainerInfo>           
         </ContainerGame>
+        {showAdd?<Confirmation/>:<></>}
         <Footer/>
         </>
     )
