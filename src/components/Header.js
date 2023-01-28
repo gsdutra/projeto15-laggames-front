@@ -1,20 +1,41 @@
 import styled from "styled-components"
 import { useNavigate, Link } from "react-router-dom"
+import { useContext } from "react"
+import { LagContext } from "../contexts/LagContext"
+import axios from "axios"
 
 export default function Header(){
+    const { token, avata, REACT_APP_API_URL, userName, tipo, setGame } = useContext(LagContext)
     const navigate = useNavigate()
 
     function carrinho(){
-        navigate("/checkout")
+        navigate("/cart")
+    }
+
+    function logout(){
+        const url = REACT_APP_API_URL + `/logout/${token}`   
+        const promise = axios.delete(url) 
+
+        promise.then(res => {  
+            setGame(undefined)
+            navigate("/")   
+            alert("Usuario deslogado")           
+        }) 
+
+        promise.catch((err) => {
+            console.log(err)
+        })               
     }
 
     return(
         <HeaderPages>
-            <h1>La<span>GG</span>ames</h1>
-            <HeaderUser>
-            <img src="https://conteudo.imguol.com.br/c/entretenimento/d2/2018/05/10/god-of-war---ps4---modo-de-fotografia-1525965576844_v2_3x4.jpg" alt="Logo TrackIt"/>
-            <ion-icon onClick={()=>carrinho()} name="cart-outline"></ion-icon>
-            <ion-icon name="log-out-outline"></ion-icon>
+            <h1 onClick={()=>navigate("/home")}>La<span>GG</span>ames</h1>
+            <HeaderUser>                 
+                <h2>Olá, {userName}</h2>               
+                <img src={avata} alt="Logo TrackIt"/> 
+                {tipo === "admin" ? <ion-icon onClick={()=> navigate("/cadastrogames")} name="add-circle-outline"></ion-icon> : ""}               
+                <ion-icon onClick={()=>carrinho()} name="cart-outline"></ion-icon>
+                <ion-icon onClick={()=>logout()} name="log-out-outline"></ion-icon>
             </HeaderUser>
         </HeaderPages>
     )
@@ -36,7 +57,14 @@ const HeaderPages = styled.header`
     h1{
         font-family: 'Press Start 2P', cursive;
         font-size: 20px;
-        color: #FFFFFF;   
+        color: #FFFFFF; 
+        cursor: pointer;  
+             
+    }
+    h2{
+        font-family: 'Kanit', sans-serif;
+        font-size: 12px;
+        color: #FFFFFF; 
              
     }
     span{       
@@ -61,5 +89,4 @@ const HeaderUser = styled.div`
     ion-icon:hover{
         color: #4fa94d;
     }
-
 `

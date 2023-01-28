@@ -1,21 +1,21 @@
-import { useContext, useEffect } from "react"
+import { useEffect, useContext } from "react"
 import { LagContext } from "../contexts/LagContext"
-import { useNavigate, Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import axios from "axios"
-
 import addToCart from "../functions/addToCart.js"
 
 export default function Home(){
-    const { products, setProducts, load, setIdGame, idGame } = useContext(LagContext)
+    const { token, products, setProducts, load, setIdGame, REACT_APP_API_URL } = useContext(LagContext)
     const navigate = useNavigate()
+    console.log(token)
 
     useEffect(() => {
-        const REACT_APP_API_URL = "http://localhost:5000/games" 
-        const url = REACT_APP_API_URL
-        const promise = axios.get(url) 
+        const url = REACT_APP_API_URL + "/games"    
+        const config = { headers: { Authorization: `Bearer ${token}` } }     
+        const promise = axios.get(url, config) 
 
         promise.then(res => {          
             setProducts(res.data)            
@@ -24,6 +24,8 @@ export default function Home(){
         promise.catch((err) => {
             alert(err.response.data)
             console.log(err.message)
+            console.log("erro no home")
+            navigate("/")
         })        
     }, [])
 
