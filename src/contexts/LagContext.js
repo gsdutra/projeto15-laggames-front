@@ -1,5 +1,5 @@
 import { createContext, useState } from 'react'
-import { ThreeCircles } from 'react-loader-spinner'
+import { ThreeCircles, Bars } from 'react-loader-spinner'
 
 export const LagContext = createContext({})
 
@@ -47,9 +47,17 @@ export function UserProvider( {children} ) {
 
     {title: "FIFA 23", description: "O EA SPORTS™ FIFA 23 proporciona ainda mais ação e realismo do futebol aos campos do Jogo de Todo Mundo com avanços na tecnologia HyperMotion2 no PlayStation®5, que agora tem o dobro de capturas de movimentos do mundo real, criando animações de futebol mais reais do que nunca.", cape: "https://cdn1.epicgames.com/offer/f5deacee017b4b109476933f7dd2edbd/EGS_EASPORTSFIFA23StandardEdition_EACanada_S1_2560x1440-aaf9c5273c27a485f2cce8cb7e804f5c", value: 349},
     ]  
+    const REACT_APP_API_URL = "http://localhost:5000"
+    const [userName, setUserName] = useState("")
+    const [userId, setUserId] = useState("")
+    const [avata, setAvata] = useState("")
+    const [token, setToken] = useState()
     const [products, setProducts] = useState(undefined)
     const [idGame, setIdGame] = useState(undefined)
     const [game, setGame] = useState(undefined)
+    const [tipo, setTipo] = useState("")
+    const inputDesbotado = "#F2F2F2"
+    const inputAtivo = "#FFFFFF"
     const load = <ThreeCircles
         height="100"
         width="100"
@@ -62,16 +70,40 @@ export function UserProvider( {children} ) {
         innerCircleColor=""
         middleCircleColor=""
     />
+    const botaoLoading = <Bars 
+        height="30" 
+        width="80" 
+        radius="9"
+        color="#ffffff" 
+        ariaLabel="bars-loading"
+        wrapperStyle={{}}
+        wrapperClassName=""
+        visible={true}    
+    /> 
 
   return (
     <LagContext.Provider value={{
         products,
         setProducts,
         load,
+        botaoLoading,
         idGame, 
         setIdGame,
         game,
-        setGame
+        setGame,
+        inputDesbotado,
+        inputAtivo,
+        REACT_APP_API_URL,
+        userId,
+        setUserId,
+        token,
+        setToken,
+        userName,
+        setUserName,
+        setAvata,
+        avata,
+        setTipo,
+        tipo
     }}>
       {children}
     </LagContext.Provider>

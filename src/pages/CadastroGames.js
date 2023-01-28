@@ -3,30 +3,31 @@ import { LagContext } from "../contexts/LagContext"
 import styled from "styled-components"
 import axios from "axios"
 import { useNavigate, Link } from "react-router-dom"
+import Header from "../components/Header"
+import Footer from "../components/Footer"
 
 export default function Cadastro() {
     const { botaoLoading, inputAtivo, inputDesbotado, REACT_APP_API_URL } = useContext(LagContext)
-    const [nome, setNome] = useState("")
-    const [email, setEmail] = useState("")
-    const [senha, setSenha] = useState("")
-    const [confirmaSenha, setConfirmaSenha] = useState("")
-    const [avatar, setAvatar] = useState("")
+    const [titulo, setTitulo] = useState("")
+    const [descricao, setDescricao] = useState("")
+    const [valor, setValor] = useState("")
+    const [capa, setCapa] = useState("")
     const [textoBotao, setTextoBotao] = useState("Cadastrar")
     const [desabilitado, setDesabilitado] = useState("")
     const navigate = useNavigate()
 
-    function cadastrarUsuario(e) {
+    function cadastrarGame(e) {
         e.preventDefault()
         setTextoBotao(botaoLoading) 
         setDesabilitado("disabled")
 
-        const body = { nome, email, senha, confirmaSenha, avatar }        
-        const url = REACT_APP_API_URL + "/cadastro" 
+        const body = { titulo, descricao, valor, capa }        
+        const url = REACT_APP_API_URL + "/cadastroGame" 
         const promise = axios.post(url, body)
 
         promise.then((res) => { 
-            alert("Cadastro realizado!")
-            navigate("/") 
+            alert("Cadastro de game realizado!")
+            navigate("/home") 
         })
 
         promise.catch(err => { 
@@ -38,67 +39,56 @@ export default function Cadastro() {
     }
 
     return (
+        <>
+        <Header/>
         <CadastroContainer>
-            <Form onSubmit={cadastrarUsuario}>
-            <TitleBody>Cadastro</TitleBody>
+            <Form onSubmit={cadastrarGame}>
+            <TitleBody>Cadastro Game</TitleBody>
                 <Input 
-                    id="name"
+                    id="titulo"
                     type="text" 
-                    placeholder="Nome" 
-                    value={nome} 
-                    onChange={e => setNome(e.target.value)} 
+                    placeholder="Titulo" 
+                    value={titulo} 
+                    onChange={e => setTitulo(e.target.value)} 
                     disabled={desabilitado}
                     corFundo={desabilitado ? inputDesbotado : inputAtivo }
                     required
                 />
                 <Input 
-                    id="email"
-                    type="email" 
-                    placeholder="E-mail"
-                    value={email} 
-                    onChange={e => setEmail(e.target.value)} 
+                    id="descricao"
+                    type="text" 
+                    placeholder="Descrição"
+                    value={descricao} 
+                    onChange={e => setDescricao(e.target.value)} 
                     disabled={desabilitado}
                     corFundo={desabilitado ? inputDesbotado : inputAtivo }
                     required 
                 />
                 <Input 
-                    id="password"
-                    type="password"
-                    placeholder="Senha" 
-                    value={senha} 
-                    onChange={e => setSenha(e.target.value)}
+                    id="valor"
+                    type="text"
+                    placeholder="valor" 
+                    value={valor} 
+                    onChange={e => setValor(e.target.value)}
                     disabled={desabilitado}
                     corFundo={desabilitado ? inputDesbotado : inputAtivo }
                     required 
                 />
                 <Input 
-                    id="confirmeSenha"
-                    type="password"
-                    placeholder="Confirme a senha" 
-                    value={confirmaSenha} 
-                    onChange={e => setConfirmaSenha(e.target.value)} 
-                    disabled={desabilitado}
-                    corFundo={desabilitado ? inputDesbotado : inputAtivo }
-                    required
-                />
-                <Input 
-                    id="url"
+                    id="capa"
                     type="url" 
-                    placeholder="URL do avatar" 
-                    value={avatar} 
-                    onChange={e => setAvatar(e.target.value)}
+                    placeholder="Capa" 
+                    value={capa} 
+                    onChange={e => setCapa(e.target.value)}
                     disabled={desabilitado}
                     corFundo={desabilitado ? inputDesbotado : inputAtivo }
                     required 
                 />
                 <Button data-test="sign-in-submit" disabled={desabilitado} type="submit">{textoBotao}</Button> 
-            </Form>
-            <LinkSignUp>
-                <Link to={`/`}>
-                    <p>Já tem uma conta? Entre agora!</p>
-                </Link>                
-            </LinkSignUp>
+            </Form>            
         </CadastroContainer>
+        <Footer/>
+        </>
     )    
 }
 
@@ -182,19 +172,3 @@ const Button = styled.button`
     margin: 5px 0;
     cursor: pointer;
 `
-const LinkSignUp = styled.div`
-    margin-top: 20px;    
-   p{    
-        text-decoration: none;
-        font-family: 'Montserrat', sans-serif;
-        font-style: normal;
-        font-weight: 700;
-        font-size: 15px;
-        line-height: 18px;
-        color: #FFFFFF;
-   }
-   a{
-        text-decoration: none;
-   }
-`
-
