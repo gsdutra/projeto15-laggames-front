@@ -10,10 +10,12 @@ import addToCart from "../functions/addToCart.js"
 import Confirmation from "../components/Confirmation"
 
 export default function Game(){
-    const { idGame, game, setGame, load } = useContext(LagContext)
+    const { idGame, game, setGame, load, token } = useContext(LagContext)
     const navigate = useNavigate()
 
     const [showAdd, setShowAdd] = useState(false)
+
+    const config = { headers: { Authorization: `Bearer ${token}` } }
 
     useEffect(() => {        
         const REACT_APP_API_URL = `http://localhost:5000/game/${idGame}` 
@@ -35,7 +37,7 @@ export default function Game(){
     }
 
     function addToCartFunc(product, ammount){
-        addToCart(product, ammount)
+        addToCart(product, ammount, config)
         setShowAdd(true)
         setTimeout(()=>setShowAdd(false), 1500)
     }

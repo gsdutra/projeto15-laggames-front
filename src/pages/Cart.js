@@ -1,4 +1,5 @@
 import {useState, useEffect, useContext} from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import Header from "../components/Header"
@@ -9,12 +10,21 @@ export default function Cart(props){
 
 	const {REACT_APP_API_URL, token} = useContext(LagContext)
 
+	const nav = useNavigate()
+
 	const [produtos, setProdutos] = useState({items: [], total: 0})
+
+	const [refresh, setRefresh] = useState(0)
 
 	const config = {
 		headers: {
-			"Authorization": token
+			"Authorization": `Bearer ${token}`
 		}
+	}
+
+	function deleteItem(productId){
+		const prom = axios.delete(`${REACT_APP_API_URL}/userProducts/${productId}`, config)
+		setRefresh(refresh+1)
 	}
 
 	useEffect(()=>{
@@ -23,7 +33,7 @@ export default function Cart(props){
 		promisse.then((res)=> (
 			res.data? setProdutos(res.data) : console.log()
 			)).catch((err)=>console.log(err))
-	},[])
+	},[refresh])
 
 	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
@@ -52,8 +62,13 @@ export default function Cart(props){
 												</div>
 											</ItemsInner>
 										</JustifyItems>
-											<div Style="font-size: 18px">{emReal(elem.totalPrice)}
-											</div>
+											<PriceAndTrash>
+												{emReal(elem.totalPrice)}
+												<Trash>
+													<br/>
+												<ion-icon onClick={()=>deleteItem(elem.productId)} name="trash-sharp"></ion-icon>
+												</Trash>
+											</PriceAndTrash>
 									</Items>
 								</>
 								)}
@@ -68,7 +83,7 @@ export default function Cart(props){
 										<div Style="font-size: 20px">{emReal(produtos.total)}
 											</div>
 									</div>
-									<button>
+									<button onClick={()=>nav('/checkout')}>
 										Continuar
 									</button>
 								</div>
@@ -90,6 +105,23 @@ export default function Cart(props){
 const Body = styled.div`
 	display: flex;
 	padding: 7%;
+	padding-top: 72px;
+`
+
+const PriceAndTrash = styled.div`
+	font-size: 18px
+`
+const Trash = styled.div`
+	font-size: 22px;
+	color: red;
+	text-align: right;
+
+	transition: .2s;
+		&:hover{
+			transform: scale(1.08);
+			transition: .2s;
+			cursor: pointer;
+		}
 `
 
 const FooterCart = styled.div`

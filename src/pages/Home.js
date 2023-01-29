@@ -11,13 +11,14 @@ import Confirmation from "../components/Confirmation"
 export default function Home(){
     const { token, products, setProducts, load, setIdGame, REACT_APP_API_URL } = useContext(LagContext)
     const navigate = useNavigate()
-    console.log(token)
 
     const [showAdd, setShowAdd] = useState(false)
 
+    const config = { headers: { Authorization: `Bearer ${token}` } }
+
     useEffect(() => {
         const url = REACT_APP_API_URL + "/games"    
-        const config = { headers: { Authorization: `Bearer ${token}` } }     
+
         const promise = axios.get(url, config) 
 
         promise.then(res => {          
@@ -33,7 +34,7 @@ export default function Home(){
     }, [])
 
     function addToCartFunc(product, ammount){
-        addToCart(product, ammount)
+        addToCart(product, ammount, config)
         setShowAdd(true)
         setTimeout(()=>setShowAdd(false), 1500)
     }
