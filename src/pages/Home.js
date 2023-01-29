@@ -5,7 +5,6 @@ import styled from "styled-components"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import axios from "axios"
-import addToCart from "../functions/addToCart.js"
 import Confirmation from "../components/Confirmation"
 
 export default function Home(){
@@ -34,7 +33,8 @@ export default function Home(){
     }, [])
 
     function addToCartFunc(product, ammount){
-        addToCart(product, ammount, config)
+        const prom = axios.post(`${REACT_APP_API_URL}/userProducts`,{product, ammount}, config)
+
         setShowAdd(true)
         setTimeout(()=>setShowAdd(false), 1500)
     }
