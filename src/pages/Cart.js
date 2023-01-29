@@ -32,7 +32,13 @@ export default function Cart(props){
 
 		promisse.then((res)=> (
 			res.data? setProdutos(res.data) : console.log()
-			)).catch((err)=>console.log(err))
+			))
+
+		promisse.catch((err) => {
+			alert("Desconectado. Faça login novamente.")
+			console.log(err)
+			nav("/")
+		})     
 	},[refresh])
 
 	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
