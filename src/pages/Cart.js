@@ -104,7 +104,7 @@ export default function Cart(props){
 									Continuar comprando
 								</button>
 								<button onClick={()=>nav('/checkout')}>
-									Finalizar compra
+									Finalizar compra									
 								</button>
 							</ContainerButtons>
 					</Brief>
@@ -222,7 +222,7 @@ const ContainerButtons = styled.div`
         border: none;
         border-radius: 50px;
         width: 40%;
-        height: 35px;
+        height: 55px;
         font-weight: 700;
         margin: 5px 5px 10px;
         font-family: 'Kanit', sans-serif;
@@ -231,7 +231,7 @@ const ContainerButtons = styled.div`
         color: #FFFFFF;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: center;		
         cursor: pointer;
     }
     button:first-child{
