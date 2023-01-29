@@ -1,47 +1,45 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useContext} from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import Header from "../components/Header"
 import Footer from "../components/Footer"
-
-const produtost = {
-	"total": "4.7",
-	"items": [
-	{
-		"productName": "banana",
-		"productId": "<id em ObjectId>",
-		"ammount": "3",
-		"unitaryPrice": "54.13",
-		"totalPrice": "162.39",
-		"productImage": "https://upload.wikimedia.org/wikipedia/pt/b/be/The_Last_of_Us_capa.png"
-	},
-	{
-		"productName": "massam",
-		"productId": "<id em ObjectId>",
-		"ammount": "3",
-		"unitaryPrice": "54.13",
-		"totalPrice": "162.39",
-		"productImage": "https://upload.wikimedia.org/wikipedia/pt/b/be/The_Last_of_Us_capa.png"
-	},
-	{
-		"productName": "peirax",
-		"productId": "<id em ObjectId>",
-		"ammount": "3",
-		"unitaryPrice": "54.13",
-		"totalPrice": "162.39",
-		"productImage": "https://upload.wikimedia.org/wikipedia/pt/b/be/The_Last_of_Us_capa.png"
-	}
-]}
+import { LagContext } from "../contexts/LagContext"
 
 export default function Cart(props){
 
+	const {REACT_APP_API_URL, token} = useContext(LagContext)
+
+	const nav = useNavigate()
+
 	const [produtos, setProdutos] = useState({items: [], total: 0})
 
-	useEffect(()=>{
-		const promisse = axios.get("http://localhost:5000/userProducts")
+	const [refresh, setRefresh] = useState(0)
 
-		promisse.then((res)=> setProdutos(res.data)).catch((err)=>console.log(err))
-	},[])
+	const config = {
+		headers: {
+			"Authorization": `Bearer ${token}`
+		}
+	}
+
+	function deleteItem(productId){
+		const prom = axios.delete(`${REACT_APP_API_URL}/userProducts/${productId}`, config)
+		setRefresh(refresh+1)
+	}
+
+	useEffect(()=>{
+		const promisse = axios.get(`${REACT_APP_API_URL}/userProducts`, config)
+
+		promisse.then((res)=> (
+			res.data? setProdutos(res.data) : console.log()
+			))
+
+		promisse.catch((err) => {
+			alert("Desconectado. Faça login novamente.")
+			console.log(err)
+			nav("/")
+		})     
+	},[refresh])
 
 	const emReal = (valor) => (Number(valor).toLocaleString('pt-br',{style: 'currency', currency: 'BRL'}));
 
@@ -49,48 +47,61 @@ export default function Cart(props){
 		<>
         	<Header/>
 			<Body>
-				<Brief>
-					<p>Resumo</p>
-					<p Style="font-size: 16px">Verifique seus itens:</p>
-					<Separator/>
-						<BriefList>
-							{produtos.items.map((elem,index)=>
-								<>
-								{index!==0?<Separator/>:<></>}
-									<Items>
-									<JustifyItems>
-										<img src={elem.productImage}/>
-										<ItemsInner>
-											{elem.productName}<br/>
-											<div>
-												<br/>
-												Preço unitário: {emReal(elem.unitaryPrice)}<br/>
-												Quantidade: {elem.ammount}
-											</div>
-										</ItemsInner>
-									</JustifyItems>
-										<div Style="font-size: 18px">{emReal(elem.totalPrice)}
-										</div>
-								</Items>
-							</>
-							)}
-						</BriefList>
-
+				{produtos.items.length>0?
+					<Brief>
+						<p>Carrinho</p>
+						<p Style="font-size: 16px">Verifique seus itens:</p>
 						<Separator/>
-						
-						<FooterCart>
-							<div>
+							<BriefList>
+								{produtos.items.map((elem,index)=>
+									<>
+									{index!==0?<Separator/>:<></>}
+										<Items>
+										<JustifyItems>
+											<img src={elem.productImage}/>
+											<ItemsInner>
+												{elem.productName}<br/>
+												<div>
+													<br/>
+													Preço unitário: {emReal(elem.unitaryPrice)}<br/>
+													Quantidade: {elem.ammount}
+												</div>
+											</ItemsInner>
+										</JustifyItems>
+											<PriceAndTrash>
+												{emReal(elem.totalPrice)}
+												<Trash>
+													<br/>
+												<ion-icon onClick={()=>deleteItem(elem.productId)} name="trash-sharp"></ion-icon>
+												</Trash>
+											</PriceAndTrash>
+									</Items>
+								</>
+								)}
+							</BriefList>
+
+							<Separator/>
+							
+							<FooterCart>
 								<div>
-									Preço total:
-									<div Style="font-size: 20px">{emReal(produtos.total)}
-										</div>
+									<div>
+										Preço total:
+										<div Style="font-size: 20px">{emReal(produtos.total)}
+											</div>
+									</div>
+									<button onClick={()=>nav('/checkout')}>
+										Continuar
+									</button>
 								</div>
-								<button>
-									Continuar
-								</button>
-							</div>
-						</FooterCart>
-				</Brief>
+							</FooterCart>
+					</Brief>
+					:
+					<Brief>
+						<br/>
+							<p>Seu carrinho está vazio</p>
+						<br/>
+					</Brief>
+				}
 			</Body>
 			<Footer/>
         </>
@@ -100,6 +111,23 @@ export default function Cart(props){
 const Body = styled.div`
 	display: flex;
 	padding: 7%;
+	padding-top: 72px;
+`
+
+const PriceAndTrash = styled.div`
+	font-size: 18px
+`
+const Trash = styled.div`
+	font-size: 22px;
+	color: red;
+	text-align: right;
+
+	transition: .2s;
+		&:hover{
+			transform: scale(1.08);
+			transition: .2s;
+			cursor: pointer;
+		}
 `
 
 const FooterCart = styled.div`

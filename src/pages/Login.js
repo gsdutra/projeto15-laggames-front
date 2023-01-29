@@ -22,7 +22,7 @@ export default function Login() {
         const promise = axios.post(url, body)
        
         promise.then((res) => {
-                setToken(res.data.token) 
+                setToken(res.data.token)
                 setUserName(res.data.name) 
                 setUserId(res.data.userId)
                 setAvata(res.data.avatar) 

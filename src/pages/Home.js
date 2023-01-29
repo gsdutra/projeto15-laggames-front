@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react"
+import { useEffect, useContext, useState } from "react"
 import { LagContext } from "../contexts/LagContext"
 import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
@@ -6,15 +6,19 @@ import Header from "../components/Header"
 import Footer from "../components/Footer"
 import axios from "axios"
 import addToCart from "../functions/addToCart.js"
+import Confirmation from "../components/Confirmation"
 
 export default function Home(){
     const { token, products, setProducts, load, setIdGame, REACT_APP_API_URL } = useContext(LagContext)
     const navigate = useNavigate()
-    console.log(token)
+
+    const [showAdd, setShowAdd] = useState(false)
+
+    const config = { headers: { Authorization: `Bearer ${token}` } }
 
     useEffect(() => {
         const url = REACT_APP_API_URL + "/games"    
-        const config = { headers: { Authorization: `Bearer ${token}` } }     
+
         const promise = axios.get(url, config) 
 
         promise.then(res => {          
@@ -28,6 +32,12 @@ export default function Home(){
             navigate("/")
         })        
     }, [])
+
+    function addToCartFunc(product, ammount){
+        addToCart(product, ammount, config)
+        setShowAdd(true)
+        setTimeout(()=>setShowAdd(false), 1500)
+    }
 
     function gameUnid(id){
         setIdGame(id)
@@ -57,12 +67,14 @@ export default function Home(){
                         <p>R$ {p.value},00</p>
                         <ContainerButtons>   
                             <button onClick={()=>(gameUnid(p._id))}>Mais detalhes</button>
-                            <button onClick={()=>addToCart(p._id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
+                            <button onClick={()=>addToCartFunc(p._id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
                         </ContainerButtons>
                     </GameUnid>
                 ))}
             </ContainerGames>
         </ContainerHome>
+
+        {showAdd?<Confirmation/>:<></>}
         <Footer/>
         </>
     )
