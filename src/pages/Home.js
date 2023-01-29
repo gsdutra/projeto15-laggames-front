@@ -8,14 +8,12 @@ import axios from "axios"
 import Confirmation from "../components/Confirmation"
 
 export default function Home(){
-    const { token, products, setProducts, load, setIdGame, REACT_APP_API_URL } = useContext(LagContext)
+    const { token, products, setProducts, load, setIdGame, REACT_APP_API_URL, tipo, count, setCount } = useContext(LagContext) 
+    const [showAdd, setShowAdd] = useState(false)
     const navigate = useNavigate()
 
-    const [showAdd, setShowAdd] = useState(false)
-
-    const config = { headers: { Authorization: `Bearer ${token}` } }
-
     useEffect(() => {
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         const url = REACT_APP_API_URL + "/games"    
 
         const promise = axios.get(url, config) 
@@ -30,9 +28,10 @@ export default function Home(){
             console.log("erro no home")
             navigate("/")
         })        
-    }, [])
+    }, [count])
 
     function addToCartFunc(product, ammount){
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         const prom = axios.post(`${REACT_APP_API_URL}/userProducts`,{product, ammount}, config)
 
         setShowAdd(true)
@@ -45,17 +44,41 @@ export default function Home(){
         navigate("/game")       
     }
 
+    function deleteGame(id, title){  
+        if(window.confirm(`Deletar Jogo ${title}?`)) {
+            const url = `${REACT_APP_API_URL}/deleteGame/${id}` 
+            const promise = axios.delete(url) 
+
+            promise.then(res => {  
+                console.log("jogo deletado")
+                setCount(count+1)              
+            }) 
+
+            promise.catch((err) => {
+                console.log(err)
+            }) 
+        }        
+    }
+
     if(products === undefined) {
         return <Load>{load}</Load>;
     }
 
     return(
         <>
-        <Header/>
-        <AdvertisingGG>
-            <h1>OFERTAS IMPERDÍVEIS</h1>
-            <p>Jogue mais, pague menos. Descubra agora ofertas incríveis nos melhores jogos</p>
-        </AdvertisingGG>
+        <Header/> 
+        {tipo === "admin" ?
+            <AdvertisingGG>
+                <h1>ADMINISTRADOR DO SISTEMA LOGADO</h1>
+                <p>Como essa conta o admin pode excluir qualquer game com o botão da lixeira (<ion-icon name="trash-sharp"></ion-icon>) 
+                e adicionar game com o botão (<ion-icon name="add-circle-outline"></ion-icon>) do cabeçalho</p> 
+            </AdvertisingGG> 
+            : 
+            <AdvertisingGG>
+                <h1>OFERTAS IMPERDÍVEIS</h1>
+                <p>Jogue mais, pague menos. Descubra agora ofertas incríveis nos melhores jogos</p> 
+            </AdvertisingGG>
+        } 
         <ContainerHome>
             <ContainerGames>
                 {products.map((p) => (
@@ -66,14 +89,17 @@ export default function Home(){
                         <h1>{p.title}</h1>
                         <p>R$ {p.value},00</p>
                         <ContainerButtons>   
-                            <button onClick={()=>(gameUnid(p._id))}>Mais detalhes</button>
-                            <button onClick={()=>addToCartFunc(p._id, 1)}><ion-icon name="cart-outline"></ion-icon></button>                
+                            <button onClick={() => gameUnid(p._id)}>Mais detalhes</button>
+                            {tipo === "admin" ?                             
+                                <button onClick={() => deleteGame(p._id, p.title)}><ion-icon name="trash-sharp"></ion-icon></button> 
+                                : 
+                                <button onClick={() => addToCartFunc(p._id, 1)}><ion-icon name="cart-outline"></ion-icon></button> 
+                            }             
                         </ContainerButtons>
                     </GameUnid>
                 ))}
             </ContainerGames>
         </ContainerHome>
-
         {showAdd?<Confirmation/>:<></>}
         <Footer/>
         </>
@@ -135,7 +161,9 @@ const GameUnid = styled.div`
         align-items: center;
     }
     img{
-        width: 100%;
+        width: 100%;      
+        height: 80px; 
+        object-fit: cover;
     }
     h1{
         font-family: 'Kanit', sans-serif;

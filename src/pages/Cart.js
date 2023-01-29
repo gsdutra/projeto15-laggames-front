@@ -95,14 +95,18 @@ export default function Cart(props){
 								<div>
 									<div>
 										Preço total:
-										<div Style="font-size: 20px">{emReal(produtos.total)}
-											</div>
-									</div>
-									<button onClick={()=>nav('/checkout')}>
-										Continuar
-									</button>
-								</div>
+										<div Style="font-size: 20px">{emReal(produtos.total)}</div>										 
+									</div>									  
+								</div>								
 							</FooterCart>
+							<ContainerButtons>   
+								<button onClick={()=>nav('/home')}>
+									Continuar comprando
+								</button>
+								<button onClick={()=>nav('/checkout')}>
+									Finalizar compra
+								</button>
+							</ContainerButtons>
 					</Brief>
 					:
 					<Brief>
@@ -122,7 +126,6 @@ const Body = styled.div`
 	padding: 7%;
 	padding-top: 72px;
 `
-
 const AlignItems = styled.div`
 	display: flex;
 	align-items: center;
@@ -138,9 +141,8 @@ const AlignItems = styled.div`
 		}
 	}
 `
-
 const PriceAndTrash = styled.div`
-	font-size: 18px
+	font-size: 18px;
 `
 const Trash = styled.div`
 	font-size: 22px;
@@ -154,7 +156,6 @@ const Trash = styled.div`
 			cursor: pointer;
 		}
 `
-
 const FooterCart = styled.div`
 	display: flex;
 	flex-direction: row-reverse;
@@ -162,42 +163,10 @@ const FooterCart = styled.div`
 	font-size: 16px;
 	text-align: right;
 	line-height: 20px;
-
-	button{
-        background-color: #4fa94d;
-        border: none;
-        border-radius: 50px;
-        width: 300px;
-        height: 50px;
-        font-weight: 700;
-        margin: 5px 5px 10px;
-        font-family: 'Montserrat', sans-serif;
-        font-size: 12px;
-        text-decoration: none;
-        font-family: 'Kanit', sans-serif;
-        font-style: normal;
-        font-size: 20px;
-        color: #FFFFFF;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: 0 1px 5px black;
-        cursor: pointer;
-    }
-	button:hover{
-        background-color: #a3e0a1;
-        color: #000000;
-    }
-    button:active{
-        background-color: #FFFFFF;
-        color: #000000;
-    }
 `
-
 const JustifyItems = styled.div`
 	display: flex;
 `
-
 const Items = styled.div`
 	display: flex;
 	justify-content: space-between;
@@ -213,14 +182,12 @@ const Items = styled.div`
 	}
 	
 `
-
 const ItemsInner = styled.div`
 	margin-left: 10px;
 	div{
 		font-size: 15px;
 	}
 `
-
 const Brief = styled.div`
 	font-family: 'Kanit', sans-serif;
 
@@ -243,9 +210,40 @@ const BriefList = styled.div`
 	margin-left: 10px;
 	margin-right: 10px;
 `
-
 const Separator = styled.div`
 	width: 100%;
 	height: 1px;
 	background: #00000030;
+`
+const ContainerButtons = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+	button{
+        border: none;
+        border-radius: 50px;
+        width: 40%;
+        height: 35px;
+        font-weight: 700;
+        margin: 5px 5px 10px;
+        font-family: 'Kanit', sans-serif;
+		font-size: 15px;
+        text-decoration: none;
+        color: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    button:first-child{
+        background-color: #4fa94d;
+    }
+    button:last-child{
+        background-color: #db3636;
+    }
+    button:hover{
+        background-color: #a3e0a1;
+    }
+    button:active{
+        background-color: #FFFFFF;
+    }
 `

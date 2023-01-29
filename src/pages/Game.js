@@ -9,16 +9,16 @@ import { useNavigate, Link } from "react-router-dom"
 import Confirmation from "../components/Confirmation"
 
 export default function Game(){
-    const { idGame, game, setGame, load, token, REACT_APP_API_URL } = useContext(LagContext)
+    const { idGame, game, setGame, load, token, REACT_APP_API_URL } = useContext(LagContext) 
+    const [showAdd, setShowAdd] = useState(false)
     const navigate = useNavigate()
 
-    const [showAdd, setShowAdd] = useState(false)
+    //const config = { headers: { Authorization: `Bearer ${token}` } }
 
-    const config = { headers: { Authorization: `Bearer ${token}` } }
-
-    useEffect(() => {        
-        const REACT_APP_API_URL = `${REACT_APP_API_URL}/game/${idGame}` 
-            const url = REACT_APP_API_URL     
+    useEffect(() => {  
+        //console.log(`${REACT_APP_API_URL}/deleteGame/${id}`)      
+            //const REACT_APP_API_URL = `${REACT_APP_API_URL}/game/${idGame}` 
+            const url = `${REACT_APP_API_URL}/game/${idGame}`    
             const promise = axios.get(url) 
 
             promise.then(res => {  
@@ -36,7 +36,7 @@ export default function Game(){
     }
 
     function addToCartFunc(product, ammount){
-
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         const prom = axios.post(`${REACT_APP_API_URL}/userProducts`,{product, ammount}, config)
 
         setShowAdd(true)

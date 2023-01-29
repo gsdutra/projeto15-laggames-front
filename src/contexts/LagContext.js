@@ -13,6 +13,7 @@ export function UserProvider( {children} ) {
     const [idGame, setIdGame] = useState(undefined)
     const [game, setGame] = useState(undefined)
     const [tipo, setTipo] = useState("")
+    const [count, setCount] = useState(2) 
     const inputDesbotado = "#F2F2F2"
     const inputAtivo = "#FFFFFF"
     const load = <ThreeCircles
@@ -60,7 +61,9 @@ export function UserProvider( {children} ) {
         setAvata,
         avata,
         setTipo,
-        tipo
+        tipo,
+        count,
+        setCount,
     }}>
       {children}
     </LagContext.Provider>

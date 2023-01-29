@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export default function Confirmation(props){
-	return(<Conf>
-		<p>
-			Item adicionado ao carrinho
-		</p>
-	</Conf>)
+	return(
+		<Conf>
+			<p>Item adicionado ao carrinho</p>
+		</Conf>
+	)
 }
 
 const Conf = styled.div`
@@ -16,7 +16,6 @@ const Conf = styled.div`
 	height: 60px;
 	background: white;
 	text-align: center;
-
 	display: flex;
 	align-items: center;
 	justify-content: center;

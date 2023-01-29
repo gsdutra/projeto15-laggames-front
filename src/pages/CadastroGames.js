@@ -98,23 +98,7 @@ const CadastroContainer = styled.div`
     align-items: center;
     justify-content: center;
     height: 100vh;
-    width: 100vw;
-    background: linear-gradient(45deg,#000000,#1d241c,#1b3813,#025400);
-    background-size: 300% 300%;
-    animation: colors 15s ease infinite;
-    color:#FFFFFF;
-        @keyframes colors{
-            0%{
-                background-position: 0% 50%;
-            }
-            50%{
-                background-position: 100% 50%; 
-            }
-            100%{
-                background-position: 0% 50%;
-            }
-}   
-    
+    color:#FFFFFF;    
     p{
         text-align: center;
         color: #FFFFFF;
