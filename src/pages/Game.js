@@ -10,7 +10,7 @@ import addToCart from "../functions/addToCart.js"
 import Confirmation from "../components/Confirmation"
 
 export default function Game(){
-    const { idGame, game, setGame, load, token } = useContext(LagContext)
+    const { idGame, game, setGame, load, token, REACT_APP_API_URL } = useContext(LagContext)
     const navigate = useNavigate()
 
     const [showAdd, setShowAdd] = useState(false)
@@ -18,7 +18,7 @@ export default function Game(){
     const config = { headers: { Authorization: `Bearer ${token}` } }
 
     useEffect(() => {        
-        const REACT_APP_API_URL = `http://localhost:5000/game/${idGame}` 
+        const REACT_APP_API_URL = `${REACT_APP_API_URL}/game/${idGame}` 
             const url = REACT_APP_API_URL     
             const promise = axios.get(url) 
 
