@@ -6,7 +6,6 @@ import { LagContext } from "../contexts/LagContext"
 import { useEffect, useContext, useState } from "react"
 import { useNavigate, Link } from "react-router-dom"
 
-import addToCart from "../functions/addToCart.js"
 import Confirmation from "../components/Confirmation"
 
 export default function Game(){
@@ -37,7 +36,9 @@ export default function Game(){
     }
 
     function addToCartFunc(product, ammount){
-        addToCart(product, ammount, config)
+
+        const prom = axios.post(`${REACT_APP_API_URL}/userProducts`,{product, ammount}, config)
+
         setShowAdd(true)
         setTimeout(()=>setShowAdd(false), 1500)
     }
