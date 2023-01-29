@@ -32,7 +32,7 @@ export default function Game(){
 
     function pageHome(){       
         setGame(undefined)
-        navigate("/home")       
+        navigate("/home")
     }
 
     function addToCartFunc(product, ammount){

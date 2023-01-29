@@ -22,16 +22,21 @@ export default function Cart(props){
 		}
 	}
 
+	function changeItemAmmount(productId, ammount){
+		const prom = axios.put(`${REACT_APP_API_URL}/userProducts/${productId}`,{ammount}, config)
+		prom.then(()=>setRefresh(refresh+1))
+	}
+
 	function deleteItem(productId){
 		const prom = axios.delete(`${REACT_APP_API_URL}/userProducts/${productId}`, config)
-		setRefresh(refresh+1)
+		prom.then(()=>setRefresh(refresh+1))
 	}
 
 	useEffect(()=>{
 		const promisse = axios.get(`${REACT_APP_API_URL}/userProducts`, config)
 
 		promisse.then((res)=> (
-			res.data? setProdutos(res.data) : console.log()
+			(res.data && res.data !== 'Carrinho vazio')? setProdutos(res.data) : console.log()
 			))
 
 		promisse.catch((err) => {
@@ -64,7 +69,11 @@ export default function Cart(props){
 												<div>
 													<br/>
 													Preço unitário: {emReal(elem.unitaryPrice)}<br/>
-													Quantidade: {elem.ammount}
+													<AlignItems>
+														Quantidade: {elem.ammount}
+														<ion-icon onClick={()=>changeItemAmmount(elem.productId, elem.ammount-1)} name="remove-circle-outline"></ion-icon>
+														<ion-icon onClick={()=>changeItemAmmount(elem.productId, elem.ammount+1)} name="add-circle-outline"></ion-icon>
+													</AlignItems>
 												</div>
 											</ItemsInner>
 										</JustifyItems>
@@ -112,6 +121,22 @@ const Body = styled.div`
 	display: flex;
 	padding: 7%;
 	padding-top: 72px;
+`
+
+const AlignItems = styled.div`
+	display: flex;
+	align-items: center;
+	ion-icon{
+		margin-left: 10px;
+		color: white;
+
+		transition: .2s;
+		&:hover{
+			transform: scale(1.1);
+			transition: .2s;
+			cursor: pointer;
+		}
+	}
 `
 
 const PriceAndTrash = styled.div`
